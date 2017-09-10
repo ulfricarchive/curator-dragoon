@@ -1,0 +1,27 @@
+connections:
+  - "127.0.0.1:2181"
+
+exhibitor:
+  enabled: false
+  port: 80
+  backupConnection: 127.0.0.1
+  use-ssl: true
+  rest-uri-path: /exhibitor/v1/cluster/list
+  polling-ms: 300000
+  retry:
+    use-default: true
+    forever: false
+    interval-ms: 2000
+    max-interval-ms: 10000
+    max-retries: 3
+
+retry:
+  forever: false
+  interval-ms: 2000
+  max-interval-ms: 10000
+  max-retries: 3
+
+authentication:
+  enabled: true
+  use-vault: true
+  acl: "none if using vault, otherwise scheme:authInfo"
