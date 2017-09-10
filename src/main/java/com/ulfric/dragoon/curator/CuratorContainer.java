@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.xml.stream.events.Namespace;
-
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.ensemble.EnsembleProvider;
 import org.apache.curator.ensemble.exhibitor.DefaultExhibitorRestClient;
@@ -55,13 +53,21 @@ public class CuratorContainer extends Container {
 
 	private CuratorFramework createCurator() {
 		CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder();
-		builder.namespace("/trank");
-		builder.retryPolicy(getRetryPolicy(config.retry()));
 
+		addNamespace(builder);
+		addRetryPolicy(builder);
 		addAuthenticationData(builder);
 		addEnsembleData(builder);
 
 		return builder.build();
+	}
+
+	private void addNamespace(CuratorFrameworkFactory.Builder builder) {
+		if (namespace == null) {
+			return;
+		}
+
+		builder.namespace(namespace.value());
 	}
 
 	private void bindToFactory() {
@@ -104,6 +110,10 @@ public class CuratorContainer extends Container {
 			throw new IllegalStateException("connections must have at least one zookeeper instance");
 		}
 		return connections;
+	}
+
+	private void addRetryPolicy(CuratorFrameworkFactory.Builder builder) {
+		builder.retryPolicy(getRetryPolicy(config.retry()));
 	}
 
 	private RetryPolicy getRetryPolicy(RetryConfig config) {
