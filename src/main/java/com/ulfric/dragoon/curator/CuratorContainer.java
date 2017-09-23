@@ -20,7 +20,7 @@ import org.apache.curator.retry.RetryOneTime;
 
 import com.ulfric.dragoon.ObjectFactory;
 import com.ulfric.dragoon.application.Container;
-import com.ulfric.dragoon.cfg4j.Settings;
+import com.ulfric.dragoon.conf4j.Settings;
 import com.ulfric.dragoon.curator.authentication.AclHelper;
 import com.ulfric.dragoon.curator.authentication.VaultAuthentication;
 import com.ulfric.dragoon.curator.config.ExhibitorConfig;
