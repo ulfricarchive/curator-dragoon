@@ -1,6 +1,8 @@
 package com.ulfric.dragoon.curator.config;
 
-public interface RetryConfig {
+import com.ulfric.conf4j.ConfigurationBean;
+
+public interface RetryConfig extends ConfigurationBean {
 
 	boolean forever();
 

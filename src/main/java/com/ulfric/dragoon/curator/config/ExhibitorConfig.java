@@ -1,6 +1,8 @@
 package com.ulfric.dragoon.curator.config;
 
-public interface ExhibitorConfig {
+import com.ulfric.conf4j.ConfigurationBean;
+
+public interface ExhibitorConfig extends ConfigurationBean {
 
 	boolean enabled();
 
