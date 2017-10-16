@@ -2,8 +2,10 @@ package com.ulfric.dragoon.curator;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.ensemble.EnsembleProvider;
 import org.apache.curator.ensemble.exhibitor.DefaultExhibitorRestClient;
@@ -38,6 +40,9 @@ public class CuratorContainer extends Container {
 
 	@Settings("zoo")
 	private ZkConfig config;
+
+	@Inject(optional = true)
+	private Logger logger;
 
 	private CuratorFramework curator;
 
@@ -150,6 +155,11 @@ public class CuratorContainer extends Container {
 				authInfo = config.authentication().acl();
 			}
 
+			if (StringUtils.isEmpty(authInfo)) {
+				warn("ZooKeeper authorization credentials not found");
+				return;
+			}
+
 			builder.authorization(Collections.singletonList(AclHelper.parseAuthInfo(authInfo)));
 		}
 	}
@@ -157,6 +167,12 @@ public class CuratorContainer extends Container {
 	private void unregister() {
 		curator.close();
 		factory.bind(CuratorFramework.class).toNothing();
+	}
+
+	private void warn(String message) {
+		if (logger != null) {
+			logger.warning(message);
+		}
 	}
 
 }
